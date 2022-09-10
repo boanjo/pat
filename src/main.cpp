@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <avr/sleep.h>
-
+#include "secrets.h"
 #include "Adafruit_FONA.h"
 
 #define FONA_VIO 11
@@ -77,7 +77,7 @@ void loop()
   sleep_cpu();  // one cycle
 
   // Here we are in sleep mode waiting forever until the switch is triggered
-  Serial.println("Wakeeup");
+  Serial.println("Wake up");
   digitalWrite(LED_BUILTIN, HIGH);
   if (digitalRead(FONA_PS) == LOW)
   {
@@ -107,7 +107,7 @@ void loop()
 
   digitalWrite(LED_BUILTIN, LOW);
 
-  char message[40] = "Posten! Bat=";
+  char message[40] = "Post! Bat=";
   uint16_t vbat = 0;
   char bat_str[5] = "?";
   if (fona.getBattVoltage(&vbat))
@@ -119,7 +119,7 @@ void loop()
   strcat(message, bat_str);
   strcat(message, "mV");
 
-  char toNumber[20] = "0730435567";
+  char toNumber[20] = PHONE_NUMBER;
   if (!fona.sendSMS(toNumber, message))
   {
     digitalWrite(LED_BUILTIN, LOW);
